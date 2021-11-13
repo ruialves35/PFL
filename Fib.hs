@@ -8,6 +8,10 @@ fibRec n = fibRec(n-1) + fibRec(n-2)
 
 --1.2
 
+
 --1.3
-fibListaInfinita :: [Integer]
-fibListaInfinita = 0 : 1 :  [a+b | (a,b)<-zip fibListaInfinita (tail fibListaInfinita)]
+listaInfinita :: [Integer]
+listaInfinita = 0 : 1 :  [a+b | (a,b) <- zip listaInfinita (tail listaInfinita)]
+
+fibListaInfinita :: (Integral a) => a -> a
+fibListaInfinita n = fromIntegral (listaInfinita !! (fromIntegral n))
