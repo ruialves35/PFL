@@ -13,6 +13,7 @@ fibLista n = lista !! fromIntegral n
   where lista = 0 : 1 : map(\n -> (lista !! (n-1)) + (lista !! (n-2)) ) [2.. fromIntegral n]
 
 
+
 -- fibListaInfinita calculates the fibonacci value of the element n using an infinite list
 fibListaInfinita :: (Integral a) => a -> a
 fibListaInfinita n = lista !! (fromIntegral n)
