@@ -11,21 +11,25 @@ isPositive :: BigNumber -> Bool
 isPositive bn = fst bn
 
 -- checks if bn1 > bn2
+-- if signal of bn1 and bn2 is the same then checks module
+-- otherwise checks the signal of bn1 (if its positive it means bn2 its negative so bn1 > bn2)
 isBigger :: BigNumber -> BigNumber -> Bool
-isBigger bn1 bn2 = bnToInt bn1 >= bnToInt bn2
+isBigger b1 b2
+  | isPositive b1 == isPositive b2 = if (isPositive b1) then isBiggerModule b1 b2 else not (isBiggerModule b1 b2)
+  | otherwise = isPositive b1
 
--- gets Bigger BigNumber in module
+-- returns a bool saying if the first big number is bigger or equal to the second in module
 isBiggerModule :: BigNumber -> BigNumber -> Bool
-isBiggerModule bn1 bn2 = dec2int (snd bn1) >= dec2int (snd bn2)
+isBiggerModule (signal1, []) (signal2, []) = True
+isBiggerModule (signal1, (x:xs))  (signal2, []) = True
+isBiggerModule (signal1, [])  (signal2, (y:ys)) = False
+isBiggerModule (signal1, (x:xs)) (signal2, (y:ys))
+  | (length xs > length ys) = True
+  | (length ys > length xs) = False
+  | (x > y) = True
+  | (y > x) = False
+  | otherwise = isBiggerModule (signal1, xs) (signal2, ys)
 
--- converts list of integer to integers
-dec2int :: [Int] -> Int
-dec2int l = foldl (\x y -> 10 * x + y) 0 l
-
--- converts BigNumber to Int
-bnToInt :: BigNumber -> Int
-bnToInt (sign, l) = dec2int l * multiplier
-  where multiplier = if sign then 1 else -1
 
 -- removes trailing zeros from BigNumber
 stripZeros :: BigNumber -> BigNumber
