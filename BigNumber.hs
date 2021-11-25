@@ -7,11 +7,17 @@ import Data.Char
 -- [Int] represents the number
 type BigNumber = (Bool, [Int])
 
-
 -- checks if a BigNumber is positive
 -------------------------------------------------------------------------------------
 isPositive :: BigNumber -> Bool
 isPositive bn = fst bn
+
+-- returns the bn element of a list of BigNumbers
+-------------------------------------------------------------------------------------
+getIndex :: BigNumber -> [BigNumber] -> BigNumber
+getIndex _ [] = (False, [-1])
+getIndex (True, [0]) list = head list
+getIndex bn (x:xs) = getIndex (subBN bn (True, [1])) xs
 
 
 -- checks if bn1 > bn2
