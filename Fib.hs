@@ -39,7 +39,7 @@ fibRecBN bn = somaBN (fibRecBN bnRec1)  (fibRecBN bnRec2)
 -- fibListaBN uses dynamic programming to calculate the bn-fibonacci element
 -- to do so, an auxiliar function was used in order to store the current values
 -- of the list with the elements and to create the breaking condition of the
--- list calculation 
+-- list calculation
 -------------------------------------------------------------------------------------
 fibListaBN :: BigNumber -> BigNumber
 fibListaBN bn = getIndex bn lista
@@ -47,6 +47,9 @@ fibListaBN bn = getIndex bn lista
     first = (True, [0]) : [(True, [1])]
     lista = helpFibListBN (somaBN bn (True,[1])) (True, [2]) first
 
+-- function that calculates the fibonacci list from currBn to bn
+-- list must have the initial values from 0 to currBn
+-- returns a list with all the values until the moment
 helpFibListBN :: BigNumber -> BigNumber -> [BigNumber] -> [BigNumber]
 helpFibListBN bn currBn currList =
   if (isBiggerModule currBn bn) then currList
