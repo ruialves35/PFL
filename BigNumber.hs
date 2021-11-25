@@ -130,9 +130,10 @@ arraySum carry (x : xs) (y : ys) = (mod currDigit 10) : arraySum crr xs ys
 -------------------------------------------------------------------------------------
 arrayDiff :: Int -> [Int] -> [Int] -> [Int]
 arrayDiff 0 [] [] = []
-arrayDiff carry (x : xs) [] = currDigit : arrayDiff 0 xs []
+arrayDiff carry (x : xs) [] = currDigit : arrayDiff crr xs []
   where
-    currDigit = x - carry
+    crr = if (x < carry) then 1 else 0
+    currDigit = x + crr*10 - carry
 arrayDiff carry (x : xs) (y : ys) = currDigit : arrayDiff crr xs ys
   where
     currY = carry + y
@@ -169,3 +170,16 @@ rowMul val carry (x : xs) = currDigit : rowMul val newCarry xs
     currVal = val * x + carry
     currDigit = mod currVal 10
     newCarry = div currVal 10
+
+
+
+-- divBN divides 2 positive BigNumbers
+-------------------------------------------------------------------------------------
+divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBN bn1 bn2 = if (isBiggerModule bn2 bn1) then ((True, [0]), bn1) else auxDivBN (True, [0]) bn1 bn2
+
+auxDivBN :: BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
+auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDivBN currQuoc currBn1 bn2
+  where
+    currQuoc = somaBN quoc (True, [1]) -- subtracted 1 more time, so adds 1 to quocient
+    currBn1 = subBN bn1 bn2  -- take of the value of bn2
