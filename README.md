@@ -4,7 +4,7 @@ PFL Project
 
 
 ## Alínea 4
-Como seria de se esperar, os métodos de cálculo da sequência de Fibonacci são claramente mais eficientes quando aplicados à estrutura de dados `Int`. Isto porque, trata-se de uma estrutura de dados que representa inteiros num intervalo definido, ao contrário dos `Integers` e `BigNumbers`, que são limitados pela própria memória da máquina. 
+Como seria de se esperar, os métodos de cálculo da sequência de Fibonacci são claramente mais eficientes quando aplicados à estrutura de dados `Int`. Isto porque se trata de uma estrutura de dados que representa inteiros num intervalo definido, ao contrário dos `Integers` e `BigNumbers`, que são limitados pela própria memória da máquina. 
 
 No entanto, este primeiro tipo de dados é apenas capaz de armazenar números da sequência de Fibonacci até n=92, já que o intervalo máximo de valores de um `Int` é [-2^63, 2^63 - 1]. Por outro lado, tanto os `Integers`, como os `BigNumbers`, são capazes de calcular números da sequência muito maiores, visto que são limitados apenas pela memória física do sistema e, no contexto dos testes realizados, o número de sequência máximo calculado foi n = 10^6.
 
