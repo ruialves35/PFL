@@ -16,9 +16,16 @@ isPositive bn = fst bn
 -------------------------------------------------------------------------------------
 getIndex :: BigNumber -> [BigNumber] -> BigNumber
 getIndex _ [] = (False, [-1])
+getIndex (False, _) _ = (False, [-1])
 getIndex (True, [0]) list = head list
-getIndex bn (x:xs) = getIndex (subBN bn (True, [1])) xs
+getIndex bn (x : xs) = getIndex (subBN bn (True, [1])) xs
 
+-- returns the length of a BigNumber
+-- This should be use in case we work with values outside the scope of 64 bit Int, which is extremly unlikely
+-------------------------------------------------------------------------------------
+lengthBN :: BigNumber -> BigNumber
+lengthBN (_, []) = (True, [0])
+lengthBN (_, l) = somaBN (True, [1]) (lengthBN (True, tail l))
 
 -- checks if bn1 > bn2
 -- if signal of bn1 and bn2 is the same then checks module
@@ -28,7 +35,6 @@ isBigger :: BigNumber -> BigNumber -> Bool
 isBigger b1 b2
   | isPositive b1 == isPositive b2 = if (isPositive b1) then isBiggerModule b1 b2 else not (isBiggerModule b1 b2)
   | otherwise = isPositive b1
-
 
 -- returns a bool saying if the first big number is bigger or equal to the second in module
 -- compares recursively the last digit of bigNumbers if the length of them is the same
@@ -45,7 +51,6 @@ isBiggerModule (signal1, (x : xs)) (signal2, (y : ys))
   | (y > x) = False
   | otherwise = isBiggerModule (signal1, xs) (signal2, ys)
 
-
 -- removes trailing zeros from BigNumber
 -- ex: [0, 1, 2, 3] -> [1, 2, 3]
 -------------------------------------------------------------------------------------
@@ -53,8 +58,6 @@ stripZeros :: BigNumber -> BigNumber
 stripZeros (sign, l) = if (list /= []) then (sign, list) else (sign, [0])
   where
     list = dropWhile (== 0) l
-
-
 
 -- scanner function computes a string in the format of a BigNumber
 -- to do so, it first checks the signal of the string (+ or -)
@@ -66,7 +69,6 @@ scanner str = (isPos, map (\x -> digitToInt x) strippedString)
     isPos = head str /= '-'
     strippedString = if isPos then str else tail str
 
-
 -- output function computes a BigNumber into a string
 -- to do so, it checks if the big number is positive and then
 -- converts each number of the bigNumber to digit and concatenates
@@ -77,7 +79,6 @@ output bn =
   if (isPositive bn == True)
     then map (\x -> intToDigit x) (snd bn)
     else '-' : map (\x -> intToDigit x) (snd bn)
-
 
 -- somaBN function computes the sum of 2 BigNumbers
 -- to do so, it first checks the signal of them and if they are the same
@@ -95,7 +96,6 @@ somaBN bn1 bn2
     bigger = if biggerBn1 then bn1 else bn2
     smaller = if biggerBn1 then bn2 else bn1
 
-
 -- subBN function computes the subtraction of 2 BigNumbers
 -- to do so, it first checks the signal of them. If they have the same signal,
 -- it calls somaBN with bn2 signal changed, since bn1 - bn2 its equal to bn1 + (-bn2)
@@ -107,7 +107,6 @@ subBN :: BigNumber -> BigNumber -> BigNumber
 subBN bn1 bn2
   | isPositive bn1 /= isPositive bn2 = somaBN bn1 (fst bn1, snd bn2)
   | otherwise = somaBN bn1 (not (fst bn2), snd bn2) -- signal bn1 = signal bn2
-
 
 -- Function that sums 2 arrays representing integers
 -- to do so, it receives a carry and each array with the numbers, by doing a
@@ -129,7 +128,6 @@ arraySum carry (x : xs) (y : ys) = (mod currDigit 10) : arraySum crr xs ys
     currDigit = x + y + carry
     crr = if (currDigit >= 10) then 1 else 0
 
-
 -- arrayDiff Function that subtract 2 arrays representing integers
 -- to do so, it subtracts recursively the head number of each array and keeps the carry of
 -- that subtraction
@@ -139,13 +137,12 @@ arrayDiff 0 [] [] = []
 arrayDiff carry (x : xs) [] = currDigit : arrayDiff crr xs []
   where
     crr = if (x < carry) then 1 else 0
-    currDigit = x + crr*10 - carry
+    currDigit = x + crr * 10 - carry
 arrayDiff carry (x : xs) (y : ys) = currDigit : arrayDiff crr xs ys
   where
     currY = carry + y
     crr = if (x < currY) then 1 else 0
     currDigit = x + crr * 10 - currY
-
 
 --  mulBN Function multiplies two bigNumbers.
 -- To do so, it checks the signal of the result (+ if the 2 bigNumbers have the same signal, - if they dont)
@@ -153,7 +150,6 @@ arrayDiff carry (x : xs) (y : ys) = currDigit : arrayDiff crr xs ys
 -------------------------------------------------------------------------------------
 mulBN :: BigNumber -> BigNumber -> BigNumber
 mulBN bn1 bn2 = (isPositive bn1 == isPositive bn2, reverse (arrayMul (reverse (snd bn1)) (snd bn2)))
-
 
 -- arrayMul function multiplies two arrays of Int
 -- To do so, it receives the first array in reverse order and it returns the result in reverse order
@@ -163,7 +159,6 @@ mulBN bn1 bn2 = (isPositive bn1 == isPositive bn2, reverse (arrayMul (reverse (s
 -------------------------------------------------------------------------------------
 arrayMul :: [Int] -> [Int] -> [Int]
 arrayMul l1 l2 = foldl (\x y -> arraySum 0 y (0 : x)) [] (map (\digit -> rowMul digit 0 l1) l2)
-
 
 -- rowMul function multiplies an integer with an array of integers (representing a number)
 -- To do so, it keeps a carry representing the carry of each multiplication ((4*5) has a carry of 2)
@@ -177,8 +172,6 @@ rowMul val carry (x : xs) = currDigit : rowMul val newCarry xs
     currDigit = mod currVal 10
     newCarry = div currVal 10
 
-
-
 -- divBN divides 2 positive BigNumbers
 -------------------------------------------------------------------------------------
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
@@ -191,4 +184,4 @@ auxDivBN :: BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
 auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDivBN currQuoc currBn1 bn2
   where
     currQuoc = somaBN quoc (True, [1]) -- subtracted 1 more time, so adds 1 to quocient
-    currBn1 = subBN bn1 bn2  -- take of the value of bn2
+    currBn1 = subBN bn1 bn2 -- take of the value of bn2
