@@ -42,23 +42,23 @@ fibRecBN bn = somaBN (fibRecBN bnRec1)  (fibRecBN bnRec2)
 -- list calculation
 -------------------------------------------------------------------------------------
 fibListaBN :: BigNumber -> BigNumber
-fibListaBN bn = lista !! (length (lista) - 1)
+fibListaBN bn = getIndex bn lista
   where
     first = (True, [0]) : [(True, [1])]
-    lista = helpFibListBN (somaBN bn (True,[1])) (True, [2]) first
+    lista = helpFibListBN bn (True, [1]) first
 
 -- function that calculates the fibonacci list from currBn to bn
 -- list must have the initial values from 0 to currBn
 -- returns a list with all the values until the moment
 helpFibListBN :: BigNumber -> BigNumber -> [BigNumber] -> [BigNumber]
-helpFibListBN bn currBn currList =
-  if (isBiggerModule currBn bn) then currList
-  else helpFibListBN bn nextBn nextList
+helpFibListBN targetIdx lastIdx currList =
+  if (isBiggerModule lastIdx targetIdx) then currList
+  else helpFibListBN targetIdx nextBn nextList
   where
-    bnm1 = subBN currBn (True, [1])
-    bnm2 = subBN currBn (True, [2])
-    nextBn = somaBN currBn (True, [1])
-    nextList = currList ++ [somaBN (currList !! (length (currList) - 1)) (currList !! (length (currList) - 2))]
+    idx1 = subBN lastIdx (True, [1])
+    nextBn = somaBN lastIdx (True, [1])
+    nextList = currList ++ [somaBN (getIndex lastIdx currList) (getIndex idx1 currList)]
+
 
 
 -- fibListaInfinitaBN calculates the fibonnaci of the n element by using infinite lists

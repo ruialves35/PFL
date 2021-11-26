@@ -182,7 +182,10 @@ rowMul val carry (x : xs) = currDigit : rowMul val newCarry xs
 -- divBN divides 2 positive BigNumbers
 -------------------------------------------------------------------------------------
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
-divBN bn1 bn2 = if (isBiggerModule bn2 bn1) then ((True, [0]), bn1) else auxDivBN (True, [0]) bn1 bn2
+divBN bn1 bn2
+  | (bn2 == (True, [1])) = (bn1, (True, [0]))
+  | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
+  | otherwise = auxDivBN (True, [0]) bn1 bn2
 
 auxDivBN :: BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
 auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDivBN currQuoc currBn1 bn2
