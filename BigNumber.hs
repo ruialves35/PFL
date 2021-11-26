@@ -36,12 +36,12 @@ isBigger b1 b2
   | isPositive b1 == isPositive b2 = if (isPositive b1) then isBiggerModule b1 b2 else not (isBiggerModule b1 b2)
   | otherwise = isPositive b1
 
--- returns a bool saying if the first big number is bigger or equal to the second in module
+-- returns a bool saying if the first big number is bigger than the second in module
 -- compares recursively the last digit of bigNumbers if the length of them is the same
 -- if it's not, then it means that the one with biggest length is bigger in module
 -------------------------------------------------------------------------------------
 isBiggerModule :: BigNumber -> BigNumber -> Bool
-isBiggerModule (signal1, []) (signal2, []) = True
+isBiggerModule (signal1, []) (signal2, []) = False
 isBiggerModule (signal1, (x : xs)) (signal2, []) = True
 isBiggerModule (signal1, []) (signal2, (y : ys)) = False
 isBiggerModule (signal1, (x : xs)) (signal2, (y : ys))
@@ -176,9 +176,16 @@ rowMul val carry (x : xs) = currDigit : rowMul val newCarry xs
 -------------------------------------------------------------------------------------
 divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN bn1 bn2
-  | (bn2 == (True, [1])) = (bn1, (True, [0]))
+  | bn2 == (True, [1]) = (bn1, (True, [0]))
   | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
   | otherwise = auxDivBN (True, [0]) bn1 bn2
+
+safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
+safeDivBN bn1 bn2
+  | bn2 == (True, [0]) = Nothing
+  | bn2 == (True, [1]) = Just (bn1, (True, [0]))
+  | isBiggerModule bn2 bn1 = Just ((True, [0]), bn1)
+  | otherwise = Just (auxDivBN (True, [0]) bn1 bn2)
 
 auxDivBN :: BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
 auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDivBN currQuoc currBn1 bn2
