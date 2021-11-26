@@ -42,7 +42,7 @@ fibRecBN bn = somaBN (fibRecBN bnRec1)  (fibRecBN bnRec2)
 -- list calculation
 -------------------------------------------------------------------------------------
 fibListaBN :: BigNumber -> BigNumber
-fibListaBN bn = getIndex bn lista
+fibListaBN bn = lista !! (length (lista) - 1)
   where
     first = (True, [0]) : [(True, [1])]
     lista = helpFibListBN (somaBN bn (True,[1])) (True, [2]) first
@@ -58,7 +58,7 @@ helpFibListBN bn currBn currList =
     bnm1 = subBN currBn (True, [1])
     bnm2 = subBN currBn (True, [2])
     nextBn = somaBN currBn (True, [1])
-    nextList = currList ++ [somaBN (getIndex bnm1 currList) (getIndex bnm2 currList)]
+    nextList = currList ++ [somaBN (currList !! (length (currList) - 1)) (currList !! (length (currList) - 2))]
 
 
 -- fibListaInfinitaBN calculates the fibonnaci of the n element by using infinite lists
