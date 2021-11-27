@@ -16,8 +16,8 @@ isPositive bn = fst bn
 -------------------------------------------------------------------------------------
 getIndex :: BigNumber -> [BigNumber] -> BigNumber
 getIndex _ [] = (False, [-1])
+getIndex (_, [0]) list = head list
 getIndex (False, _) _ = (False, [-1])
-getIndex (True, [0]) list = head list
 getIndex bn (x : xs) = getIndex (subBN bn (True, [1])) xs
 
 -- returns the length of a BigNumber
@@ -45,6 +45,21 @@ isBiggerModule (signal1, []) (signal2, []) = False
 isBiggerModule (signal1, (x : xs)) (signal2, []) = True
 isBiggerModule (signal1, []) (signal2, (y : ys)) = False
 isBiggerModule (signal1, (x : xs)) (signal2, (y : ys))
+  | (length xs > length ys) = True
+  | (length ys > length xs) = False
+  | (x > y) = True
+  | (y > x) = False
+  | otherwise = isBiggerModule (signal1, xs) (signal2, ys)
+
+-- returns a bool saying if the first big number is bigger or equal to the second in module
+-- compares recursively the last digit of bigNumbers if the length of them is the same
+-- if it's not, then it means that the one with biggest length is bigger in module
+-------------------------------------------------------------------------------------
+isBiggerOrEqualModule :: BigNumber -> BigNumber -> Bool
+isBiggerOrEqualModule (signal1, []) (signal2, []) = True
+isBiggerOrEqualModule (signal1, (x : xs)) (signal2, []) = True
+isBiggerOrEqualModule (signal1, []) (signal2, (y : ys)) = False
+isBiggerOrEqualModule (signal1, (x : xs)) (signal2, (y : ys))
   | (length xs > length ys) = True
   | (length ys > length xs) = False
   | (x > y) = True
@@ -92,7 +107,7 @@ somaBN bn1 bn2
   | isPositive bn1 == isPositive bn2 = (isPositive bn1, reverse (arraySum 0 (reverse (snd bn1)) (reverse (snd bn2))))
   | otherwise = stripZeros (isPositive bigger, reverse (arrayDiff 0 (reverse (snd bigger)) (reverse (snd smaller))))
   where
-    biggerBn1 = isBiggerModule bn1 bn2
+    biggerBn1 = isBiggerOrEqualModule bn1 bn2
     bigger = if biggerBn1 then bn1 else bn2
     smaller = if biggerBn1 then bn2 else bn1
 
@@ -107,7 +122,6 @@ subBN :: BigNumber -> BigNumber -> BigNumber
 subBN bn1 bn2
   | isPositive bn1 /= isPositive bn2 = somaBN bn1 (fst bn1, snd bn2)
   | otherwise = somaBN bn1 (not (fst bn2), snd bn2) -- signal bn1 = signal bn2
-
 
 -- arraySum function sums 2 arrays representing integers by doing a recursive sum of each element and keeping the carry of that sum.
 -------------------------------------------------------------------------------------
