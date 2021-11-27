@@ -1,13 +1,105 @@
 # PFL Project
 
-This projects consists of implementing a library of big-numbers in haskell, including its basic arithmetic operations, in order to calculate the Fibonacci sequence.
+This projects consists of implementing a library of big-numbers (BN) in haskell, including its basic arithmetic operations, in order to calculate the Fibonacci sequence.
 
-# Case tests to all functions.
+## Test Cases
+
+### Fibonnaci with `Int` data type
+
+#### `fibRec`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check base case of fibRec function (n=0) | fibRec 0 | 0 | 0 | Pass |
+| T02 | Check base case of fibRec function (n=1) | fibRec 1 | 1 | 1 | Pass |
+| T03 | Check value for a small sequence number | fibRec 10 | 55 | 55 | Pass |
+| T04 | Check value for a medium sized sequence number | fibRec 30 | 832040 | 832040 | Pass |
+| T05 | Check return value for invalid input | fibRec (-1) | -1 | -1 | Pass |
+
+#### `fibLista`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T11 | Check base case of fibLista function (n=0) | fibLista 0 | 0 | 0 | Pass |
+| T12 | Check base case of fibLista function (n=1) | fibLista 1 | 1 | 1 | Pass |
+| T13 | Check value for a small sequence number | fibLista 10 | 55 | 55 | Pass |
+| T14 | Check value for a medium sized sequence number | fibLista 30 | 832040 | 832040 | Pass |
+| T15 | Check value for a sequence number out of range for  `Int` | fibLista 95 | Overflow | Overflow | Pass |
+| T16 | Check return value for invalid input | fibLista (-1) | -1 | -1 | Pass |
+
+#### `fibListaInfinita`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T21 | Check base case of fibListaInfinita function (n=0) | fibListaInfinita 0 | 0 | 0 | Pass |
+| T22 | Check base case of fibListaInfinita function (n=1) | fibListaInfinita 1 | 1 | 1 | Pass |
+| T23 | Check value for a small sequence number | fibListaInfinita 10 | 55 | 55 | Pass |
+| T24 | Check value for a medium sized sequence number | fibListaInfinita 30 | 832040 | 832040 | Pass |
+| T25 | Check value for a sequence number out of range for  `Int` | fibListaInfinita 95 | Overflow | Overflow | Pass |
+| T26 | Check return value for invalid input | fibListaInfinita (-1) | -1 | -1 | Pass |
+
+---
+### Fibonnaci with `Integer` data type
+
+#### `fibRec2`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check base case of fibRec2 function (n=0) | fibRec2 0 | 0 | 0 | Pass |
+| T02 | Check base case of fibRec2 function (n=1) | fibRec2 1 | 1 | 1 | Pass |
+| T03 | Check value for a small sequence number | fibRec2 10 | 55 | 55 | Pass |
+| T04 | Check value for a medium sized sequence number | fibRec2 30 | 832040 | 832040 | Pass |
+| T05 | Check return value for invalid input | fibRec2 (-1) | -1 | -1 | Pass |
+
+#### `fibLista2`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T11 | Check base case of fibLista2 function (n=0) | fibLista2 0 | 0 | 0 | Pass |
+| T12 | Check base case of fibLista2 function (n=1) | fibLista2 1 | 1 | 1 | Pass |
+| T13 | Check value for a small sequence number | fibLista2 10 | 55 | 55 | Pass |
+| T14 | Check value for a medium sized sequence number | fibLista2 30 | 832040 | 832040 | Pass |
+| T15 | Check value for a large sequence number (out of `Int` range) | fibLista2 95 | 31940434634990099905 | 31940434634990099905 | Pass |
+| T16 | Check return value for invalid input | fibLista2 (-1) | -1 | -1 | Pass |
+
+#### `fibListaInfinita2`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T21 | Check base case of fibListaInfinita2 function (n=0) | fibListaInfinita2 0 | 0 | 0 | Pass |
+| T22 | Check base case of fibListaInfinita2 function (n=1) | fibListaInfinita2 1 | 1 | 1 | Pass |
+| T23 | Check value for a small sequence number | fibListaInfinita2 10 | 55 | 55 | Pass |
+| T24 | Check value for a medium sized sequence number | fibListaInfinita2 30 | 832040 | 832040 | Pass |
+| T25 | Check value for a large sequence number (out of `Int` range) | fibListaInfinita2 95 | 31940434634990099905 | 31940434634990099905 | Pass |
+| T26 | Check return value for invalid input | fibListaInfinita2 (-1) | -1 | -1 | Pass |
+
+---
+### Big Numbers
+
+#### `scanner`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check if scanner converts a zero string | scanner "0" | (True,[0]) | (True,[0]) | Pass |
+| T02 | Check if scanner converts a positive string | scanner "73" | (True,[7,3]) | (True,[7,3]) | Pass |
+| T03 | Check if scanner converts a negative string | scanner "-91" | (False,[9,1]) | (False,[9,1]) | Pass |
+
+#### `output`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check if output converts 0 as big-number to string | output (True, [0]) | "0" | "0" | Pass |
+| T02 | Check if output converts a positive big-number to string | output (True, [7,3]) | "73" | "73" | Pass |
+| T03 | Check if output converts a negative big-number to string | output (False, [9,1]) | "-91" | "-91" | Pass |
+
+#### `somaBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check if the sum of two 0's as BN works | somaBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
+| T02 | Check if the sum with one 0 as argument works | somaBN (True, [1]) (True, [0]) | (True,[1]) | (True,[1]) | Pass |
+| T03 | Check if the sum of 2 positive BN works | somaBN (True, [3,0]) (True, [4,3]) | (True,[7,3]) | (True,[7,3]) | Pass |
+| T04 | Check if the sum of a positive BN with a negative BN, where the positive is bigger works | somaBN (True, [3,0]) (False, [1,3]) | (True,[1,7]) | (True,[1,7]) | Pass |
+| T05 | Check if the sum of a positive BN with a negative BN, where the negative is bigger works | somaBN (True, [3,0]) (False, [4,3]) | (False,[1,3]) | (False,[1,3]) | Pass |
+| T06 | Check if the sum of 2 negative BN works | somaBN (False, [3,0]) (False, [4,3]) | (False,[7,3]) | (False,[7,3]) | Pass |
+| T07 | Check if the sum of 2 large numbers (outside the range of `Int`) works | somaBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
 
 
-# Functions Explanation
 
-## Fib
+## Functions Explanation
+
+### Fib
 
 - `fibRec` function calculates the fibonacci value of the element n using recursion. If given an invalid value, it returns -1. This function is applied to Int.
   
@@ -23,12 +115,12 @@ This projects consists of implementing a library of big-numbers in haskell, incl
 
 - `fibListaInfinitaBN` function calculates the fibonnaci of the nth element using infinite lists applied to BigNumbers. SomaBN function was required in order to add two BigNumbers and construct the infinite list, so as the zip and tail functions. If given an invalid value, it returns -1.
 
-### Auxiliar Functions to Fib:
+#### Auxiliar Functions to Fib:
 
 - `helpFibListBN` function returns the fibonacci sequence from a starting BigNumber up until the nth element. Since we are specifying the BigNumber were to start to create the list, we must give a list with all the initial values of the fibonnaci sequence from 0 to the inicial BigNumber. This functions returns a list with all the values of the fibonacci sequence from the inicial BigNumber to the final one. It uses the length function in order to get the last 2 values from the list and, this way, use dynamic programming for the calculation of the next element.
 
 
-## BigNumbers
+### BigNumbers
 
 ### Main Functions and definition of BigNumber
 
@@ -76,6 +168,10 @@ In order to make the usage of the BigNumbers easier, we decided to represent it 
 - `rowMul` function multiplies an integer with an array of integers (representing a number). To do so, it keeps a carry representing the carry of each multiplication ((4*5) has a carry of 2) and does that sum recursively.
 
 - `auxDivBN` is an auxiliar function to the division which stores the current quocient of the division calculation and applies the subtraction of bn2 to bn1 until we can no more. This function returns the result in form of (quocient, rest).
+
+## Strategies used for Big Numbers
+
+
 
 ## Exercise 4
 As we were expecting, the methods to calculate the Fibonacci sequence are clearly more efficient when applied to the `Int` data type. This is because it is a data structure that represents integers in a predefined range, opposed to the `Integers` and `BigNumbers`, which are limited by the machine's memory.
