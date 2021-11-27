@@ -108,9 +108,8 @@ subBN bn1 bn2
   | isPositive bn1 /= isPositive bn2 = somaBN bn1 (fst bn1, snd bn2)
   | otherwise = somaBN bn1 (not (fst bn2), snd bn2) -- signal bn1 = signal bn2
 
--- Function that sums 2 arrays representing integers
--- to do so, it receives a carry and each array with the numbers, by doing a
--- recursive sum of each element and keeping the carry
+
+-- arraySum function sums 2 arrays representing integers by doing a recursive sum of each element and keeping the carry of that sum.
 -------------------------------------------------------------------------------------
 arraySum :: Int -> [Int] -> [Int] -> [Int]
 arraySum 0 [] [] = []
@@ -151,11 +150,10 @@ arrayDiff carry (x : xs) (y : ys) = currDigit : arrayDiff crr xs ys
 mulBN :: BigNumber -> BigNumber -> BigNumber
 mulBN bn1 bn2 = (isPositive bn1 == isPositive bn2, reverse (arrayMul (reverse (snd bn1)) (snd bn2)))
 
--- arrayMul function multiplies two arrays of Int
--- To do so, it receives the first array in reverse order and it returns the result in reverse order
--- that is, to do 123*45 you must call [3,2,1] * [4,5] and returns [5,3,5,5]
--- to multiply it calls foldl applyed to a map representing the multiplication of each element of bn2
--- to the array of bn1
+-- arrayMul function multiplies two arrays of Int.
+--To do so, it receives the first array in reverse order and it returns the result in reverse order as well.
+--This mean that to do 123*45 you must call [3,2,1] * [4,5] and it returns [5,3,5,5] instead of  [5,5,3,5].
+--To multiply it calls foldl applied to a map representing the multiplication of each element of bn2 to the array of bn1
 -------------------------------------------------------------------------------------
 arrayMul :: [Int] -> [Int] -> [Int]
 arrayMul l1 l2 = foldl (\x y -> arraySum 0 y (0 : x)) [] (map (\digit -> rowMul digit 0 l1) l2)
@@ -180,6 +178,9 @@ divBN bn1 bn2
   | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
   | otherwise = auxDivBN (True, [0]) bn1 bn2
 
+-- safeDivBN prevents the user to divide a number bn1 for a second number bn2 that
+-- represents the value 0 (bn2 = (True, [0]))
+-------------------------------------------------------------------------------------
 safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
 safeDivBN bn1 bn2
   | bn2 == (True, [0]) = Nothing
@@ -187,6 +188,9 @@ safeDivBN bn1 bn2
   | isBiggerModule bn2 bn1 = Just ((True, [0]), bn1)
   | otherwise = Just (auxDivBN (True, [0]) bn1 bn2)
 
+-- auxDivBN is an auxiliar function to the division which stores the current quocient
+-- of the division calculation and applies the subtraction of bn2 to bn1.
+-------------------------------------------------------------------------------------
 auxDivBN :: BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
 auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDivBN currQuoc currBn1 bn2
   where
