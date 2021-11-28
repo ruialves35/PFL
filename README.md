@@ -138,7 +138,7 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 | T65 | Check if the division of 2 positive BN works | safeDivBN (True, [73]) (True, [20]) | Just ((True,[3]),(True,[13])) | Just ((True,[3]),(True,[13])) | Pass |
 | T66 | Check if the division of 2 large numbers outside the range of `Int` works | safeDivBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0,0,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,0,4,4,5,6]) | Just ((True,[1,0]),(True,[7,6,2,4,4,0])) | Just ((True,[1,0]),(True,[7,6,2,4,4,0])) | Pass |
 
-
+----
 
 ## Functions Explanation
 
@@ -223,7 +223,7 @@ However, this first data type is only capable of storing numbers of the Fibonacc
 
 Hereafter are represented the tables with the execution time (in seconds) of the implemented functions, for each data type under analysis and for increasing values of the Fibonacci sequence.
 
-## Tables with the execution time for different functions Fib(n)
+## Tables with the execution time (seconds) for different functions Fib(n)
 
 ### `fibRec`
 
