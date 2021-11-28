@@ -113,14 +113,18 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 |---|---|---|---|---|---|
 | T01 | Check if scanner converts a zero string | scanner "0" | (True,[0]) | (True,[0]) | Pass |
 | T02 | Check if scanner converts a positive string | scanner "73" | (True,[7,3]) | (True,[7,3]) | Pass |
-| T03 | Check if scanner converts a negative string | scanner "-91" | (False,[9,1]) | (False,[9,1]) | Pass |
+| T03 | Check if scanner converts a positive string representing a big number | scanner "5372743212378421" | (True,[5,3,7,2,7,4,3,2,1,2,3,7,8,4,2,1]) | (True,[5,3,7,2,7,4,3,2,1,2,3,7,8,4,2,1]) | Pass |
+| T04 | Check if scanner converts a negative string | scanner "-91" | (False,[9,1]) | (False,[9,1]) | Pass |
+| T05 | Check if scanner converts a negative string representing a big number in module | scanner "-63218412931244" | (False,[6,3,2,1,8,4,1,2,9,3,1,2,4,4]) | (False,[6,3,2,1,8,4,1,2,9,3,1,2,4,4]) | Pass |
 
 #### `output`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|---|
 | T11 | Check if output converts 0 as big-number to string | output (True, [0]) | "0" | "0" | Pass |
 | T12 | Check if output converts a positive big-number to string | output (True, [7,3]) | "73" | "73" | Pass |
+| T12 | Check if output converts a positive big-number to string | output (True,[5,3,7,2,7,4,3,2,1,2,3,7,8,4,2,1]) | "5372743212378421" | "5372743212378421" | Pass |
 | T13 | Check if output converts a negative big-number to string | output (False, [9,1]) | "-91" | "-91" | Pass |
+| T13 | Check if output converts a negative big-number to string | output (False,[6,3,2,1,8,4,1,2,9,3,1,2,4,4]) | "-63218412931244" | "-63218412931244" | Pass |
 
 #### `somaBN`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
@@ -152,9 +156,9 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 |---|---|---|---|---|---|
 | T41 | Check if the multiplication of two 0's as BN works | mulBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
 | T42 | Check if the multiplication with one 0 as argument works | mulBN (True, [0]) (True, [1]) | (True,[0]) | (True,[0]) | Pass |
-| T43 | Check if the multiplication of 2 positive BN works | mulBN (True, [1,1]) (True, [15]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
-| T44 | Check if the multiplication of a positive BN with a negative BN works | mulBN (True, [1,1]) (False, [15]) | (False,[1,6,5]) | (False,[1,6,5]) | Pass |
-| T45 | Check if the multiplication of 2 negative BN works | mulBN (False, [1,1]) (False, [15]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
+| T43 | Check if the multiplication of 2 positive BN works | mulBN (True, [1,1]) (True, [1,5]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
+| T44 | Check if the multiplication of a positive BN with a negative BN works | mulBN (True, [1,1]) (False, [1,5]) | (False,[1,6,5]) | (False,[1,6,5]) | Pass |
+| T45 | Check if the multiplication of 2 negative BN works | mulBN (False, [1,1]) (False, [1,5]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
 | T46 | Check if 1 is the neutral element of the multiplication  | mulBN (False, [1,1,0]) (True, [1]) | (False,[1,1,0]) | (False,[1,1,0]) | Pass |
 | T47 | Check if the multiplication of 2 large numbers with a result outside the range of `Int` works | mulBN (False, [1,0,0,0,0,0,0,0,0,0,0]) (True, [1,2,3,4,5,6,7,8,9,0,1,2]) | (False,[1,2,3,4,5,6,7,8,9,0,1,2,0,0,0,0,0,0,0,0,0,0]) | (False,[1,2,3,4,5,6,7,8,9,0,1,2,0,0,0,0,0,0,0,0,0,0]) | Pass |
 
