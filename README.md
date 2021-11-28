@@ -6,7 +6,6 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 
 ### Fibonnaci with `Int` data type
 
-
 #### `fibRec`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|---|
@@ -253,7 +252,13 @@ In order to make the usage of the BigNumbers easier, we decided to represent it 
 
 - `rowMul` function multiplies an integer with an array of integers (representing a number).
 
-- `auxDivBN` function divides two BigNumbers and returns that division in form of (quocient, rest), where quocient and rest are BigNumbers as well.
+- `divBNSimple` divides 2 positive BigNumbers by calling a naive algorithm
+
+- `auxDivBN` function divides two BigNumbers and returns that division in form of (quotient, rest), where quotient and rest are BigNumbers as well, using a naive algorithm.
+
+- `divBNCalc` divides 2 positive BigNumber efficiently.
+
+- `prependBN` prepends a BN into another, taking into account the sign of the first.
 
 ## Strategies used for Big Numbers
 - `scanner` - To convert a string to a BN, this function first analyses the first character to recognize if it is a positive or negative number. Afterwards, it maps the following digits of the string to the integer's list of the BN.
@@ -277,7 +282,7 @@ In order to make the usage of the BigNumbers easier, we decided to represent it 
 - `divBN` - To compute the division of 2 BNs, we start by splitting into 3 cases, where the return value is represented by the tuple (quotient, remainder):
     - If the divisor is 1, we instantly return (dividend, 0).
     - If the module of the divisor is greater than the module of the dividend, the funtion returns (0, dividend).
-    - If none of the above apply, we call the `auxDivBN` function that divides two BigNumbers.
+    - If none of the above apply, we call the `divBNCalc` function that divides two BigNumbers efficiently.
 
 - `safeDivBN` - To compute the division of 2 BigNumbers safely, this function returns a Monad of the type `Maybe`. Hence, it is similar to the above mentioned method `divBN` but in addition to the 3 cases represented above, it first verifies if the divisor is equal to 0 and, if so, returns the value `Nothing`. Otherwise, it acts as the above function.
 
@@ -289,7 +294,17 @@ In order to make the usage of the BigNumbers easier, we decided to represent it 
 
 - `rowMul` function multiplies an integer with an array of integers (representing a number). To do so, it keeps a carry representing the carry of each multiplication ((4*5) has a carry of 2) and recursively performs the multiplication of each element. 
 
-- `auxDivBN` is an auxiliar function to the division which keeps the current quocient of the division calculation and recursively applies the subtraction of bn2 to bn1 by calling `subBN`.
+- `auxDivBN` is an auxiliar function to the division which keeps the current quotient of the division calculation and recursively applies the subtraction of bn2 to bn1 by calling `subBN`.
+
+- `divBNCalc` is a more efficient alternative to the previously mentioned `auxDivBN`, to divide positive BNs. 
+  
+  Firstly, this function receives 4 arguments: remaining divisor (`d1`), dividend (`d2`), quotient (`quot`), currently used divisor (`currD1`). The last argument stores the divisor that is being compared with the quotient in the current iteration, while the first argument stores the rest of the divisor.
+  
+  Afterwards, this function will be recursively called upon the following conditions:
+    - If `d1` is an empty list, meaning the divisor has been fully taken into account, we divide `currD1` by the quotient, using `divBNSimple`, returning a tuple, composed by the quotient up until this point appended with the resulting quotient and the resulting remainder.
+    - If `d1` is not empty, we compare the `currD1` with the quotient and, once again, there are 2 routes:
+      - If `currD1` is greater than or equal to `d2`, we perform the division, using `divBNSimple`, of `currD1` by `d2`, updating `d1` to the remainder of this calculation appended with the previous `d1` and appending the quotient of this calculation to the `quot`. Then, in order to call the this function again recursively, we need to set `currD1` to the first element of this new `d1` and consequently remove that first element from `d1`.
+      - If `currD1` is less than `d2`, we'll remove the first element of `d1`, as it will be taken into account and appended to `currD1` and then call `divBNCalc` with updated arguments.
 
 ## Exercise 4
 As we were expecting, the methods to calculate the Fibonacci sequence are clearly more efficient when applied to the `Int` data type. This is because it is a data structure that represents integers in a predefined range, opposed to the `Integers` and `BigNumbers`, which are limited by the machine's memory.

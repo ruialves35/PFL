@@ -111,17 +111,12 @@ somaBN bn1 bn2
     bigger = if biggerBn1 then bn1 else bn2
     smaller = if biggerBn1 then bn2 else bn1
 
--- subBN function computes the subtraction of 2 BigNumbers
--- to do so, it first checks the signal of them. If they have the same signal,
--- it calls somaBN with bn2 signal changed, since bn1 - bn2 its equal to bn1 + (-bn2)
--- if they dont have same signals, then it calls somaBN with the respective signal on bn2,
--- since somaBN already takes care about subtracting elements in the case that bn2 has negative
--- signal
+-- subBN function computes the subtraction of 2 BigNumbers.
+-- To do so, it shifts the sign of the 2nd operand and executes somaBN with this new operands
+-- since somaBN already takes care of subtracting elements in the case that bn2 is negative
 -------------------------------------------------------------------------------------
 subBN :: BigNumber -> BigNumber -> BigNumber
-subBN bn1 bn2
-  | isPositive bn1 /= isPositive bn2 = somaBN bn1 (fst bn1, snd bn2)
-  | otherwise = somaBN bn1 (not (fst bn2), snd bn2) -- signal bn1 = signal bn2
+subBN bn1 bn2 = somaBN bn1 (not (fst bn2), snd bn2) -- signal bn1 = signal bn2
 
 -- arraySum function sums 2 arrays representing integers by doing a recursive sum of each element and keeping the carry of that sum.
 -------------------------------------------------------------------------------------
@@ -192,9 +187,11 @@ divBN bn1 bn2
   | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
   | otherwise = divBNCalc (fst bn1, tail (snd bn1)) bn2 (True, []) (fst bn1, [head (snd bn1)])
 
+-- Prepends the array of integers of bn1 into bn2, taking into account the sign of bn1
 prependBN :: BigNumber -> BigNumber -> BigNumber
 prependBN bn1 bn2 = (fst bn1, (snd bn1) ++ (snd bn2))
 
+-- divBNCalc is an auxiliary function to divide 2 BNs more efficiently
 divBNCalc :: BigNumber -> BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBNCalc (_, []) d2 quot currD1 =
   -- If there's no more digits in the dividend
