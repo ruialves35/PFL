@@ -56,15 +56,15 @@ isBiggerModule (signal1, (x : xs)) (signal2, (y : ys))
 -- if it's not, then it means that the one with biggest length is bigger in module
 -------------------------------------------------------------------------------------
 isBiggerOrEqualModule :: BigNumber -> BigNumber -> Bool
-isBiggerOrEqualModule (signal1, []) (signal2, []) = True
-isBiggerOrEqualModule (signal1, (x : xs)) (signal2, []) = True
-isBiggerOrEqualModule (signal1, []) (signal2, (y : ys)) = False
+isBiggerOrEqualModule (_, []) (_, []) = True
+isBiggerOrEqualModule (_, (x : xs)) (signal2, []) = True
+isBiggerOrEqualModule (_, []) (signal2, (y : ys)) = False
 isBiggerOrEqualModule (signal1, (x : xs)) (signal2, (y : ys))
   | (length xs > length ys) = True
   | (length ys > length xs) = False
   | (x > y) = True
   | (y > x) = False
-  | otherwise = isBiggerModule (signal1, xs) (signal2, ys)
+  | otherwise = isBiggerOrEqualModule (signal1, xs) (signal2, ys)
 
 -- removes trailing zeros from BigNumber
 -- ex: [0, 1, 2, 3] -> [1, 2, 3]

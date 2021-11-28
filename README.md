@@ -80,20 +80,63 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 #### `output`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|---|
-| T01 | Check if output converts 0 as big-number to string | output (True, [0]) | "0" | "0" | Pass |
-| T02 | Check if output converts a positive big-number to string | output (True, [7,3]) | "73" | "73" | Pass |
-| T03 | Check if output converts a negative big-number to string | output (False, [9,1]) | "-91" | "-91" | Pass |
+| T11 | Check if output converts 0 as big-number to string | output (True, [0]) | "0" | "0" | Pass |
+| T12 | Check if output converts a positive big-number to string | output (True, [7,3]) | "73" | "73" | Pass |
+| T13 | Check if output converts a negative big-number to string | output (False, [9,1]) | "-91" | "-91" | Pass |
 
 #### `somaBN`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|---|
-| T01 | Check if the sum of two 0's as BN works | somaBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
-| T02 | Check if the sum with one 0 as argument works | somaBN (True, [1]) (True, [0]) | (True,[1]) | (True,[1]) | Pass |
-| T03 | Check if the sum of 2 positive BN works | somaBN (True, [3,0]) (True, [4,3]) | (True,[7,3]) | (True,[7,3]) | Pass |
-| T04 | Check if the sum of a positive BN with a negative BN, where the positive is bigger works | somaBN (True, [3,0]) (False, [1,3]) | (True,[1,7]) | (True,[1,7]) | Pass |
-| T05 | Check if the sum of a positive BN with a negative BN, where the negative is bigger works | somaBN (True, [3,0]) (False, [4,3]) | (False,[1,3]) | (False,[1,3]) | Pass |
-| T06 | Check if the sum of 2 negative BN works | somaBN (False, [3,0]) (False, [4,3]) | (False,[7,3]) | (False,[7,3]) | Pass |
-| T07 | Check if the sum of 2 large numbers (outside the range of `Int`) works | somaBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
+| T21 | Check if the sum of two 0's as BN works | somaBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
+| T22 | Check if the sum with one 0 as argument works | somaBN (True, [1]) (True, [0]) | (True,[1]) | (True,[1]) | Pass |
+| T23 | Check if the sum of 2 positive BN works | somaBN (True, [3,0]) (True, [4,3]) | (True,[7,3]) | (True,[7,3]) | Pass |
+| T24 | Check if the sum of a positive BN with a negative BN, where the positive is bigger works | somaBN (True, [3,0]) (False, [1,3]) | (True,[1,7]) | (True,[1,7]) | Pass |
+| T25 | Check if the sum of a positive BN with a negative BN, where the negative is bigger works | somaBN (True, [3,0]) (False, [4,3]) | (False,[1,3]) | (False,[1,3]) | Pass |
+| T26 | Check if the sum of 2 negative BN works | somaBN (False, [3,0]) (False, [4,3]) | (False,[7,3]) | (False,[7,3]) | Pass |
+| T27 | Check if the sum of 2 large numbers (outside the range of `Int`) works | somaBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
+| T28 | Check if the sum of a positive BN with a negative BN does not leave trailing 0's | somaBN (True, [1,2,3]) (False, [1,0,0]) | (True,[2,3]) | (True,[2,3]) | Pass |
+
+#### `subBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T31 | Check if the subtraction of two 0's as BN works | subBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
+| T32 | Check if the subtraction with one 0 as argument works | subBN (True, [0]) (True, [1]) | (False,[1]) | (False,[1]) | Pass |
+| T33 | Check if the subtraction of 2 positive BN, where the second is bigger, works | subBN (True, [3,0]) (True, [4,3]) | (False,[1,3]) | (False,[1,3]) | Pass |
+| T34 | Check if the subtraction of 2 positive BN, where the first is bigger, works | subBN (True, [4,3]) (True, [3,0]) | (True,[1,3]) | (True,[1,3]) | Pass |
+| T35 | Check if the subtraction of 2 negative BN, where the second is bigger, works | subBN (False, [3,0]) (False, [4,3]) | (True,[1,3]) | (True,[1,3]) | Pass |
+| T36 | Check if the subtraction of 2 negative BN, where the first is bigger, works | subBN (False, [4,3]) (False, [3,0]) | (False,[1,3]) | (False,[1,3]) | Pass |
+| T37 | Check if the subtraction of a positive BN with a negative BN works | subBN (True, [4,3]) (False, [3,0]) | (True,[7,3]) | (True,[7,3]) | Pass |
+| T38 | Check if the subtraction of 2 large numbers (outside the range of `Int`) works | subBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (False, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
+| T39 | Check if the subtraction of 2 numbers with the same sign does not leave trailing 0's | subBN (False, [1,2,3]) (False, [1,0,0]) | (False,[2,3]) | (False,[2,3]) | Pass |
+
+#### `mulBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T41 | Check if the multiplication of two 0's as BN works | mulBN (True, [0]) (True, [0]) | (True,[0]) | (True,[0]) | Pass |
+| T42 | Check if the multiplication with one 0 as argument works | mulBN (True, [0]) (True, [1]) | (True,[0]) | (True,[0]) | Pass |
+| T43 | Check if the multiplication of 2 positive BN works | mulBN (True, [1,1]) (True, [15]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
+| T44 | Check if the multiplication of a positive BN with a negative BN works | mulBN (True, [1,1]) (False, [15]) | (False,[1,6,5]) | (False,[1,6,5]) | Pass |
+| T45 | Check if the multiplication of 2 negative BN works | mulBN (False, [1,1]) (False, [15]) | (True,[1,6,5]) | (True,[1,6,5]) | Pass |
+| T46 | Check if 1 is the neutral element of the multiplication  | mulBN (False, [1,1,0]) (True, [1]) | (False,[1,1,0]) | (False,[1,1,0]) | Pass |
+| T47 | Check if the multiplication of 2 large numbers with a result outside the range of `Int` works | mulBN (False, [1,0,0,0,0,0,0,0,0,0,0]) (True, [1,2,3,4,5,6,7,8,9,0,1,2]) | (False,[1,2,3,4,5,6,7,8,9,0,1,2,0,0,0,0,0,0,0,0,0,0]) | (False,[1,2,3,4,5,6,7,8,9,0,1,2,0,0,0,0,0,0,0,0,0,0]) | Pass |
+
+#### `divBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T51 | Check if the division of 0 by a number different from 0 works | divBN (True, [0]) (True, [73]) | ((True,[0]),(True,[0])) | ((True,[0]),(True,[0])) | Pass |
+| T52 | Check if the division of a number by 1 is the numerator | divBN (True, [25]) (True, [1]) | ((True,[25]),(True,[0])) | ((True,[25]),(True,[0])) | Pass |
+| T53 | Check if the division of 2 positive BN works | divBN (True, [73]) (True, [20]) | ((True,[3]),(True,[13])) | ((True,[3]),(True,[13])) | Pass |
+| T54 | Check if the division of 2 large numbers outside the range of `Int` works | divBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0,0,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,0,4,4,5,6]) | ((True,[1,0]),(True,[7,6,2,4,4,0])) | ((True,[1,0]),(True,[7,6,2,4,4,0])) | Pass |
+
+#### `safeDivBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T61 | Check if the division of 0 by 0 behaves as expected | safeDivBN (True, [0]) (True, [0]) | Nothing | Nothing | Pass |
+| T62 | Check if the division of a number by 0 behaves as expected | safeDivBN  (True, [7,3]) (True, [0]) | Nothing | Nothing | Pass |
+| T63 | Check if the division of 0 by a number different from 0 works | safeDivBN (True, [0]) (True, [73]) | Just ((True,[0]),(True,[0])) | Just ((True,[0]),(True,[0])) | Pass |
+| T64 | Check if the division of a number by 1 is the numerator | safeDivBN (True, [25]) (True, [1]) | Just ((True,[25]),(True,[0])) | Just ((True,[25]),(True,[0])) | Pass |
+| T65 | Check if the division of 2 positive BN works | safeDivBN (True, [73]) (True, [20]) | Just ((True,[3]),(True,[13])) | Just ((True,[3]),(True,[13])) | Pass |
+| T66 | Check if the division of 2 large numbers outside the range of `Int` works | safeDivBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0,0,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,0,4,4,5,6]) | Just ((True,[1,0]),(True,[7,6,2,4,4,0])) | Just ((True,[1,0]),(True,[7,6,2,4,4,0])) | Pass |
 
 
 
