@@ -6,6 +6,7 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 
 ### Fibonnaci with `Int` data type
 
+
 #### `fibRec`
 | Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
 |---|---|---|---|---|---|
@@ -66,6 +67,43 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 | T24 | Check value for a medium sized sequence number | fibListaInfinita2 30 | 832040 | 832040 | Pass |
 | T25 | Check value for a large sequence number (out of `Int` range) | fibListaInfinita2 95 | 31940434634990099905 | 31940434634990099905 | Pass |
 | T26 | Check return value for invalid input | fibListaInfinita2 (-1) | -1 | -1 | Pass |
+
+---
+### Fibonnaci with `BigNumber` data type
+
+#### `fibRecBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T01 | Check base case of fibRecBN function (bn=(True, [0])) | fibRecBN (True, [0]) | (True, [0]) | (True, [0]) | Pass |
+| T02 | Check base case of fibRecBN function (bn=(True, [1])) | fibRecBN (True, [1]) | (True, [1]) | (True, [1]) | Pass |
+| T03 | Check value for a small sequence number | fibRecBN (True, [1,0]) | (True, [5,5]) | (True, [5,5]) | Pass |
+| T04 | Check value for a medium sized sequence number | fibRecBN (True, [3,0]) | (True, [8,3,2,0,4,0]) | (True, [8,3,2,0,4,0]) | Pass |
+| T05 | Check return value for invalid input | fibRecBN (False, [1]) | (False, [1]) | (False, [1]) | Pass |
+| T06 | Check return value for invalid input | fibRecBN (False, [1,0]) | (False, [1]) | (False, [1]) | Pass |
+
+#### `fibListaBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T11 | Check base case of fibListaBN function (bn=(True, [0])) | fibListaBN (True, [0]) | (True, [0]) | (True, [0]) | Pass |
+| T12 | Check base case of fibListaBN function (bn=(True, [1])) | fibListaBN (True, [1]) | (True, [1]) | (True, [1]) | Pass |
+| T13 | Check value for a small sequence number | fibListaBN (True, [1,0]) | (True, [5,5]) | (True, [5,5]) | Pass |
+| T14 | Check value for a medium sized sequence number | fibListaBN (True, [3,0]) | (True, [8,3,2,0,4,0]) | (True, [8,3,2,0,4,0]) | Pass |
+| T15 | Check value for a large sequence number (out of `Int` range) | fibListaBN (True, [9,5]) | (True, [3,1,9,4,0,4,3,4,6,3,4,9,9,0,0,9,9,9,0,5]) | (True, [3,1,9,4,0,4,3,4,6,3,4,9,9,0,0,9,9,9,0,5]) | Pass |
+| T16 | Check value for a large sequence number (out of `Int` range) | fibListaBN (True, [9,0,5]) | (True,[6,0,8,5,9,6,4,6,3,0,5,1,4,6,9,6,8,7,8,1,6,8,2,8,6,0,6,3,9,8,3,3,9,3,7,8,5,5,7,5,9,7,0,0,8,1,0,9,1,9,9,6,1,2,5,9,5,8,1,7,4,8,8,2,2,6,9,1,1,2,3,4,9,0,2,0,4,3,0,5,8,1,6,3,7,2,6,7,2,2,4,4,9,1,7,8,9,6,8,2,4,8,4,2,8,8,8,6,1,2,8,5,3,5,0,1,1,0,1,2,5,4,0,3,4,4,8,9,9,7,9,4,7,6,2,2,7,9,0,4,7,9,3,0,3,5,6,9,3,2,7,2,1,2,9,5,3,9,1,8,6,0,3,8,9,2,2,4,9,5,4,5,7,6,9,1,5,1,9,5,7,9,5,6,6,3,4,0,5]) | (True,[6,0,8,5,9,6,4,6,3,0,5,1,4,6,9,6,8,7,8,1,6,8,2,8,6,0,6,3,9,8,3,3,9,3,7,8,5,5,7,5,9,7,0,0,8,1,0,9,1,9,9,6,1,2,5,9,5,8,1,7,4,8,8,2,2,6,9,1,1,2,3,4,9,0,2,0,4,3,0,5,8,1,6,3,7,2,6,7,2,2,4,4,9,1,7,8,9,6,8,2,4,8,4,2,8,8,8,6,1,2,8,5,3,5,0,1,1,0,1,2,5,4,0,3,4,4,8,9,9,7,9,4,7,6,2,2,7,9,0,4,7,9,3,0,3,5,6,9,3,2,7,2,1,2,9,5,3,9,1,8,6,0,3,8,9,2,2,4,9,5,4,5,7,6,9,1,5,1,9,5,7,9,5,6,6,3,4,0,5]) | Pass |
+| T17 | Check return value for invalid input | fibListaBN (False, [1]) | (False, [1]) | (False, [1]) | Pass |
+| T18 | Check return value for invalid input | fibListaBN (False, [1,0]) | (False, [1]) | (False, [1]) | Pass |
+
+#### `fibListaInfinitaBN`
+| Test Case # | Description | Data | Expected Result | Actual Result | Pass/Fail |
+|---|---|---|---|---|---|
+| T21 | Check base case of fibListaInfinitaBN function (bn=(True, [0])) | fibListaInfinitaBN (True, [0])| (True, [0])| (True, [0])| Pass |
+| T22 | Check base case of fibListaInfinitaBN function (bn=(True, [1])) | fibListaInfinitaBN (True, [1])| (True, [1])| (True, [1])| Pass |
+| T23 | Check value for a small sequence number | fibListaInfinitaBN (True, [1,0]) | (True, [5,5]) | (True, [5,5]) | Pass |
+| T24 | Check value for a medium sized sequence number | fibListaInfinitaBN (True, [3,0]) | (True, [8,3,2,0,4,0]) | (True, [8,3,2,0,4,0]) | Pass |
+| T25 | Check value for a large sequence number (out of `Int` range) | fibListaInfinitaBN (True, [9,5]) | (True, [3,1,9,4,0,4,3,4,6,3,4,9,9,0,0,9,9,9,0,5]) | (True, [3,1,9,4,0,4,3,4,6,3,4,9,9,0,0,9,9,9,0,5]) | Pass |
+| T26 | Check value for a large sequence number (out of `Int` range) | fibListaInfinitaBN (True, [9,0,5]) | (True,[6,0,8,5,9,6,4,6,3,0,5,1,4,6,9,6,8,7,8,1,6,8,2,8,6,0,6,3,9,8,3,3,9,3,7,8,5,5,7,5,9,7,0,0,8,1,0,9,1,9,9,6,1,2,5,9,5,8,1,7,4,8,8,2,2,6,9,1,1,2,3,4,9,0,2,0,4,3,0,5,8,1,6,3,7,2,6,7,2,2,4,4,9,1,7,8,9,6,8,2,4,8,4,2,8,8,8,6,1,2,8,5,3,5,0,1,1,0,1,2,5,4,0,3,4,4,8,9,9,7,9,4,7,6,2,2,7,9,0,4,7,9,3,0,3,5,6,9,3,2,7,2,1,2,9,5,3,9,1,8,6,0,3,8,9,2,2,4,9,5,4,5,7,6,9,1,5,1,9,5,7,9,5,6,6,3,4,0,5]) | (True,[6,0,8,5,9,6,4,6,3,0,5,1,4,6,9,6,8,7,8,1,6,8,2,8,6,0,6,3,9,8,3,3,9,3,7,8,5,5,7,5,9,7,0,0,8,1,0,9,1,9,9,6,1,2,5,9,5,8,1,7,4,8,8,2,2,6,9,1,1,2,3,4,9,0,2,0,4,3,0,5,8,1,6,3,7,2,6,7,2,2,4,4,9,1,7,8,9,6,8,2,4,8,4,2,8,8,8,6,1,2,8,5,3,5,0,1,1,0,1,2,5,4,0,3,4,4,8,9,9,7,9,4,7,6,2,2,7,9,0,4,7,9,3,0,3,5,6,9,3,2,7,2,1,2,9,5,3,9,1,8,6,0,3,8,9,2,2,4,9,5,4,5,7,6,9,1,5,1,9,5,7,9,5,6,6,3,4,0,5]) | Pass |
+| T27 | Check return value for invalid input | fibListaInfinitaBN (False, [1]) | (False, [1]) | (False, [1]) | Pass |
+| T28 | Check return value for invalid input | fibListaInfinitaBN (False, [1,0]) | (False, [1]) | (False, [1]) | Pass |
 
 ---
 ### Big Numbers
@@ -145,9 +183,9 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 ### Fib
 
 - `fibRec` function calculates the fibonacci value of the element n using recursion. If given an invalid value, it returns -1. This function is applied to Int.
-  
+
 - `fibLista` function calculates the fibonacci value of the element n using dynamic programming. If given an invalid value, it returns -1. This function is applied to Int.
-  
+
 - `fibListaInfinita` function calculates the fibonacci value of the element n using an infinite list. If given an invalid value, it returns -1. This function is applied to Int.
 
 - `fibRec2`, fibLista2 and fibListaInfinita do the same thing of fibRec, fibLista and fibListaInfinita, respectively, but are applied to Integers.
