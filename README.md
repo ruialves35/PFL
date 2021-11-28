@@ -135,7 +135,7 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 | T24 | Check if the sum of a positive BN with a negative BN, where the positive is bigger works | somaBN (True, [3,0]) (False, [1,3]) | (True,[1,7]) | (True,[1,7]) | Pass |
 | T25 | Check if the sum of a positive BN with a negative BN, where the negative is bigger works | somaBN (True, [3,0]) (False, [4,3]) | (False,[1,3]) | (False,[1,3]) | Pass |
 | T26 | Check if the sum of 2 negative BN works | somaBN (False, [3,0]) (False, [4,3]) | (False,[7,3]) | (False,[7,3]) | Pass |
-| T27 | Check if the sum of 2 large numbers (outside the range of `Int`) works | somaBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
+| T27 | Check if the sum of 2 large numbers (outside the range of `Int`) works | somaBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | (True, [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0]) | (True, [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0]) | Pass |
 | T28 | Check if the sum of a positive BN with a negative BN does not leave trailing 0's | somaBN (True, [1,2,3]) (False, [1,0,0]) | (True,[2,3]) | (True,[2,3]) | Pass |
 
 #### `subBN`
@@ -148,7 +148,7 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 | T35 | Check if the subtraction of 2 negative BN, where the second is bigger, works | subBN (False, [3,0]) (False, [4,3]) | (True,[1,3]) | (True,[1,3]) | Pass |
 | T36 | Check if the subtraction of 2 negative BN, where the first is bigger, works | subBN (False, [4,3]) (False, [3,0]) | (False,[1,3]) | (False,[1,3]) | Pass |
 | T37 | Check if the subtraction of a positive BN with a negative BN works | subBN (True, [4,3]) (False, [3,0]) | (True,[7,3]) | (True,[7,3]) | Pass |
-| T38 | Check if the subtraction of 2 large numbers (outside the range of `Int`) works | subBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (False, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0] | Pass |
+| T38 | Check if the subtraction of 2 large numbers (outside the range of `Int`) works | subBN (True, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) (False, [9,2,2,3,3,7,2,0,3,6,8,5,4,7,7,5,8,0,7,0]) | (True, [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0]) | (True, [1,8,4,4,6,7,4,4,0,7,3,7,0,9,5,5,1,6,1,4,0]) | Pass |
 | T39 | Check if the subtraction of 2 numbers with the same sign does not leave trailing 0's | subBN (False, [1,2,3]) (False, [1,0,0]) | (False,[2,3]) | (False,[2,3]) | Pass |
 
 #### `mulBN`
@@ -194,6 +194,10 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 
 - `fibRec2`, fibLista2 and fibListaInfinita do the same thing of fibRec, fibLista and fibListaInfinita, respectively, but are applied to Integers.
 
+- `fibLista2` function calculates the fibonacci value of the element n using dynamic programming. If given an invalid value, it returns -1. This function is applied to Integer.
+
+- `fibListaInfinita2` function calculates the fibonacci value of the element n using an infinite list. If given an invalid value, it returns -1. This function is applied to Integer.
+
 - `fibRecBN` function calculates the fibonnaci of the nth element using recursion. If given an invalid value, it returns -1. This function is applied to BigNumbers, so the somaBN and subBN functions were used.
 
 - `fibListaBN` uses dynamic programming to calculate the bn-fibonacci element, by calling the helpFibListBN auxiliar function. To do so, an auxiliar function was used in order to store the current values of the list with the elements and to create the breaking condition of the list calculation. SomaBN Function was also required. If given an invalid value, it returns -1.
@@ -211,22 +215,19 @@ This projects consists of implementing a library of big-numbers (BN) in haskell,
 
 In order to make the usage of the BigNumbers easier, we decided to represent it as (Bool, [Int]), where the first element (Bool) represents the signal of the number (positive or negative) and the second element [Int] is a list that represents the current number. Ex: 100 -> (True, [1,0,0]); -1234 -> (False, [1, 2, 3, 4]).
 
-- `scanner` function computes a string in the format of a BigNumber. To do so, it first checks the signal of the string (+ or -) and then maps each digit of the string
+- `scanner` function computes a string in the format of a BigNumber.
 
-- `output` function computes a BigNumber into a string. To do so, it first checks if the signal of BigNumber and then converts each number of the bigNumber to digit by using the map and intToDigit functions and concatenates into a string.
+- `output` function computes a BigNumber into a string.
 
-- `somaBN` function computes the sum of 2 BigNumbers. To do so, it first checks the signal of them and if they are the same it remains the same signal, otherwise it changes the signal to the biggest bignumber in module. To add, it calls arraySum or arrayDiff, according, respectively, to having the same signal or not.
+- `somaBN` function computes the sum of 2 BigNumbers.
 
-- `subBN` function computes the subtraction of 2 BigNumbers. To do so, it first checks the signal of them. If they have the same signal, it calls somaBN with bn2 signal changed, since bn1 - bn2 it's equal to bn1 + (-bn2). If they dont have same signals, then it calls somaBN with the respective signal on bn2, since somaBN already takes care about subtracting elements in the case that bn2 has negative signal.
+- `subBN` function computes the subtraction of 2 BigNumbers.
 
--  `mulBN` Function multiplies two bigNumbers. To do so, it checks the signal of the result (+ if the 2 bigNumbers have the same signal, - if they dont) and uses the arrayMul function to multiply the array representing the number of the two bigNumbers.
+- `mulBN` function multiplies two bigNumbers.
 
-- `divBN` divides 2 positive BigNumbers. This function does not prevents the division by 0. To do the division, it uses auxDivBN auxiliar function. Since the algorithm used in auxDivBN is subtract to the first number the second one until we can't do that anymore, we decided to put a special case of the division by 1.
+- `divBN` divides 2 positive BigNumbers.
 
-#TO DO VER ESTA FUNCAO DE BOSTA :'( E ESTE COMENTARIO SERA QUE DEVIA EXPLICAR ISTO?
-
-- `safeDivBN` prevents the user to divide a number bn1 for a second number bn2 that represents the value 0. For this, it returns a Monad of the type `Maybe` and the division algorithm for valid arguments is equal to the above mentioned `divBN`
-
+- `safeDivBN` divides 2 positive BigNumbers, taking into account divisions by 0.
 
 ### Auxiliar Functions
 
@@ -244,19 +245,51 @@ In order to make the usage of the BigNumbers easier, we decided to represent it 
 
 - `stripZeros` function removes trailing zeros from a BigNumber. Ex: [0, 1, 2, 3] -> [1, 2, 3]
 
-- `arraySum` function sums 2 arrays representing integers by doing a recursive sum of each element and keeping the carry of that sum.
+- `arraySum` function sums 2 arrays representing integers.
 
-- `arrayDiff` Function subtracts 2 arrays representing integers. To do so, it subtracts recursively the head number of each array and keeps the carry of that subtraction
+- `arrayDiff` Function subtracts 2 arrays representing integers. 
 
-- `arrayMul` function multiplies two arrays of Int. To do so, it receives the first array in reverse order and it returns the result in reverse order as well. This mean that to do 123*45 you must call [3,2,1] * [4,5] and it returns [5,3,5,5] instead of  [5,5,3,5]. To multiply it calls foldl applied to a map representing the multiplication of each element of bn2 to the array of bn1, using the rowMul function.
+- `arrayMul` function multiplies two arrays of Int. 
 
-- `rowMul` function multiplies an integer with an array of integers (representing a number). To do so, it keeps a carry representing the carry of each multiplication ((4*5) has a carry of 2) and does that sum recursively.
+- `rowMul` function multiplies an integer with an array of integers (representing a number).
 
-- `auxDivBN` is an auxiliar function to the division which stores the current quocient of the division calculation and applies the subtraction of bn2 to bn1 until we can no more. This function returns the result in form of (quocient, rest).
+- `auxDivBN` function divides two BigNumbers and returns that division in form of (quocient, rest), where quocient and rest are BigNumbers as well.
 
 ## Strategies used for Big Numbers
+- `scanner` - To convert a string to a BN, this function first analyses the first character to recognize if it is a positive or negative number. Afterwards, it maps the following digits of the string to the integer's list of the BN.
 
+- `output` - To convert a BN to a string, it first checks the signal of the BigNumber, which is the first element of the data-type, and if it is negative, prepends a '-' to the return string. Then converts each number of the bigNumber to digit by using the map and intToDigit functions and concatenates into that string.
 
+- `somaBN` - To compute the sum of 2 BN, we first verify the sign of the 2 operands. From there, there are 2 possible routes:
+    - If they have the same sign, the resulting number will preserve that sign and we just need to execute the sum of 2 positive integers, represented as arrays.
+    - If they have different signs, the resulting number will preserve the sign of the operand that is bigger in module and afterwards will execute the difference of 2 positive integers, represented as arrays. Finally, to prevent the storage of trailing 0's, we call the `stipZero` auxiliar function in the end. 
+    
+    To execute the sum and difference of positive integers, we created auxiliary functions named `arraySum` and `arrayDiff` respectively.
+
+- `subBN` - To compute the subtraction of 2 BigNumbers, we reutilized the previously defined function `somaBN` and controlled our input in order to calculate using that function. This way, we shift the sign of the second operand and call `somaBN` with the new operands, since the sum of BigNumbers already takes into account negative values.
+
+-  `mulBN` - To compute the multiplication of 2 BN, similar to the previous functions, we first analyse the sign of the operands:
+    - If they have the same sign, the result will be positive.
+    - If they have different signs, the result will be negative.
+    
+    Afterwards, it calls the `arrayMul` function that multiplies two positive integers, represented as arrays.
+
+- `divBN` - To compute the division of 2 BNs, we start by splitting into 3 cases, where the return value is represented by the tuple (quotient, remainder):
+    - If the divisor is 1, we instantly return (dividend, 0).
+    - If the module of the divisor is greater than the module of the dividend, the funtion returns (0, dividend).
+    - If none of the above apply, we call the `auxDivBN` function that divides two BigNumbers.
+
+- `safeDivBN` - To compute the division of 2 BigNumbers safely, this function returns a Monad of the type `Maybe`. Hence, it is similar to the above mentioned method `divBN` but in addition to the 3 cases represented above, it first verifies if the divisor is equal to 0 and, if so, returns the value `Nothing`. Otherwise, it acts as the above function.
+
+- `arraySum` - ArraySum function receives two arrays of `Int` representing a number in reverse order ([0,0,1] represents the number 100) in order to sum those arrays. By doing a recursive sum of least significative number of the lists and keeping the carry of that sum, the arraySum performs the sum of those arrays. When a number reaches to the end, just keeps doing the sum of the carry with the remaining number. This function returns the result in reverse order.
+
+- `arrayDiff` - ArrayDiff function receives two arrays of `Int` representing a number in reverse order ([0,0,1] represents the number 100) in order to subtract those arrays. By doing a recursive subtraction of least significative number of the lists and keeping the carry of that subtraction, the arrayDiff performs the subtraction of those arrays. When a number reaches to the end, just keeps subtracting the remaining carry with the remaining number. This function returns the result in reverse order.
+
+- `arrayMul` function multiplies two arrays of Int representing a number. To do so, it receives the first array in reverse order and it returns the result in reverse order as well. This mean that to do 123*45 we must call [3,2,1] * [4,5] and it returns [5,3,5,5] instead of [5,5,3,5]. To multiply, it calls foldl applying a sum (by calling `arraySum`) to a map that performs the multiplication of each element of bn2 to the array of bn1 (by calling `rowMul`). This way, we keep adding each multiplication of the elements of bn2 to bn1. Ex: [3,2,1] * [4,5] -> 5 * [3,2,1] + 4 * [0,3,2,1] = [5,1,6] + [0,2,9,4] = [5,3,5,5] 
+
+- `rowMul` function multiplies an integer with an array of integers (representing a number). To do so, it keeps a carry representing the carry of each multiplication ((4*5) has a carry of 2) and recursively performs the multiplication of each element. 
+
+- `auxDivBN` is an auxiliar function to the division which keeps the current quocient of the division calculation and recursively applies the subtraction of bn2 to bn1 by calling `subBN`.
 
 ## Exercise 4
 As we were expecting, the methods to calculate the Fibonacci sequence are clearly more efficient when applied to the `Int` data type. This is because it is a data structure that represents integers in a predefined range, opposed to the `Integers` and `BigNumbers`, which are limited by the machine's memory.
