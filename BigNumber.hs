@@ -190,17 +190,30 @@ divBN :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
 divBN bn1 bn2
   | bn2 == (True, [1]) = (bn1, (True, [0]))
   | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
-  | otherwise = auxDivBN (True, [0]) bn1 bn2
+  | otherwise = divBNCalc (fst bn1, tail (snd bn1)) bn2 (True, []) (fst bn1, [head (snd bn1)])
 
--- safeDivBN prevents the user to divide a number bn1 for a second number bn2 that
--- represents the value 0 (bn2 = (True, [0]))
+prependBN :: BigNumber -> BigNumber -> BigNumber
+prependBN bn1 bn2 = (fst bn1, (snd bn1) ++ (snd bn2))
+
+divBNCalc :: BigNumber -> BigNumber -> BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBNCalc (_, []) d2 quot currD1 =
+  -- If there's no more digits in the dividend
+  let (divDigit, divRemainder) = divBNSimple currD1 d2
+   in (prependBN quot divDigit, divRemainder)
+divBNCalc d1 d2 quot currD1
+  | isBiggerOrEqualModule currD1 d2 =
+    let (divDigit, divRemainder) = divBNSimple currD1 d2
+        newD1 = stripZeros (prependBN divRemainder d1)
+     in divBNCalc (fst newD1, tail (snd newD1)) d2 (prependBN quot divDigit) (fst newD1, [head (snd newD1)])
+  | otherwise = divBNCalc (fst d1, tail (snd d1)) d2 quot (prependBN currD1 (fst d1, [head (snd d1)]))
+
+-- divBNSimple divides 2 positive BigNumbers using a naive algorithm
 -------------------------------------------------------------------------------------
-safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
-safeDivBN bn1 bn2
-  | bn2 == (True, [0]) = Nothing
-  | bn2 == (True, [1]) = Just (bn1, (True, [0]))
-  | isBiggerModule bn2 bn1 = Just ((True, [0]), bn1)
-  | otherwise = Just (auxDivBN (True, [0]) bn1 bn2)
+divBNSimple :: BigNumber -> BigNumber -> (BigNumber, BigNumber)
+divBNSimple bn1 bn2
+  | bn2 == (True, [1]) = (bn1, (True, [0]))
+  | isBiggerModule bn2 bn1 = ((True, [0]), bn1)
+  | otherwise = auxDivBN (True, [0]) bn1 bn2
 
 -- auxDivBN is an auxiliar function to the division which stores the current quocient
 -- of the division calculation and applies the subtraction of bn2 to bn1.
@@ -210,3 +223,13 @@ auxDivBN quoc bn1 bn2 = if (isBiggerModule bn2 bn1) then (quoc, bn1) else auxDiv
   where
     currQuoc = somaBN quoc (True, [1]) -- subtracted 1 more time, so adds 1 to quocient
     currBn1 = subBN bn1 bn2 -- take of the value of bn2
+
+-- safeDivBN prevents the user to divide a number bn1 for a second number bn2 that
+-- represents the value 0 (bn2 = (True, [0]))
+-------------------------------------------------------------------------------------
+safeDivBN :: BigNumber -> BigNumber -> Maybe (BigNumber, BigNumber)
+safeDivBN bn1 bn2
+  | bn2 == (True, [0]) = Nothing
+  | bn2 == (True, [1]) = Just (bn1, (True, [0]))
+  | isBiggerModule bn2 bn1 = Just ((True, [0]), bn1)
+  | otherwise = Just (divBNCalc (fst bn1, tail (snd bn1)) bn2 (True, []) (fst bn1, [head (snd bn1)]))
